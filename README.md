@@ -1,6 +1,4 @@
-# NODETOMIC
-
-Minimalist boilerplate for **nodejs**, designed for vertical and horizontal scalability.
+# Accounting APP by - 3 Way Technologies
 
 ## Technologies
 

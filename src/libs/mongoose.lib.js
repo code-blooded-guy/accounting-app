@@ -18,16 +18,19 @@ if (PROJECT_MODE === 'development') {
 
 const connect = () =>
   new Promise((resolve, reject) => {
+    // mongoose.connect(
+    //   MONGODB_USERNAME && MONGODB_PASSWORD
+    //     ? `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOSTNAME}${PORT}/${MONGODB_DATABASE}`
+    //     : `mongodb://${MONGODB_HOSTNAME}${PORT}/${MONGODB_DATABASE}`,
+    //   {
+    //     useCreateIndex: true,
+    //     useNewUrlParser: true,
+    //     useFindAndModify: false,
+    //     useUnifiedTopology: true
+    //   }
+    // );
     mongoose.connect(
-      MONGODB_USERNAME && MONGODB_PASSWORD
-        ? `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOSTNAME}${PORT}/${MONGODB_DATABASE}`
-        : `mongodb://${MONGODB_HOSTNAME}${PORT}/${MONGODB_DATABASE}`,
-      {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true
-      }
+      'mongodb+srv://account_user:Account123@accounting.9fywn0k.mongodb.net/?retryWrites=true&w=majority'
     );
     const db = mongoose.connection;
 

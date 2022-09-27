@@ -12,9 +12,9 @@ const init = async () => {
   // Connect to DB (You can enable seeds)
   await db();
   // Connect to Redis
-  await redis();
+  // await redis();
   // Add cronjobs
-  await cronjobs();
+  // await cronjobs();
   // Create Express app and add routes
   await routes();
   // Connect Sockets (idle to connections...)

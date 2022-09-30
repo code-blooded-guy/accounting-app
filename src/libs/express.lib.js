@@ -78,15 +78,15 @@ const create = async (routes) => {
   // views
   app.set('views', path.resolve(__dirname, './../src/layouts'));
   // index
-  app.get('/', (_, res) =>
-    res.render('index', {
-      name: PROJECT_NAME,
-      mode: PROJECT_MODE,
-      docs: swaggerConfig.exposeSwaggerUI ? swaggerConfig.swaggerUIPath : false
-    })
-  );
-  // Static
-  app.use(express.static(path.resolve(__dirname, './../src/layouts')));
+  // app.get('/', (_, res) =>
+  //   res.render('index', {
+  //     name: PROJECT_NAME,
+  //     mode: PROJECT_MODE,
+  //     docs: swaggerConfig.exposeSwaggerUI ? swaggerConfig.swaggerUIPath : false
+  //   })
+  // );
+  // // Static
+  // app.use(express.static(path.resolve(__dirname, './../src/layouts')));
 };
 
 export { create, app };

@@ -30,7 +30,7 @@ const connect = () =>
     //   }
     // );
     mongoose.connect(
-      'mongodb+srv://account_user:Account123@accounting.9fywn0k.mongodb.net/?retryWrites=true&w=majority'
+      'mongodb+srv://account_user:Account123@accounting.9fywn0k.mongodb.net/db_account'
     );
     const db = mongoose.connection;
 

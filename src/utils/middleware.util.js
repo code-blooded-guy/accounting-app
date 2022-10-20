@@ -12,8 +12,10 @@ import { check, renew } from '@/utils/auth.util';
 const mw = (required) => {
   return async (req, res, next) => {
     try {
-      let token = req.headers['authorization'].replace('Bearer ', '');
+      // console.log(req.headers)
 
+      let token = req.headers['authorization'].replace('Bearer ', '');
+      console.log(token)
       if (token) {
         try {
           // Is JWT format
@@ -25,10 +27,12 @@ const mw = (required) => {
           const decoded = await check(token);
           // Validate permissions
           if (required) {
+      console.log(decoded)
             if ('permissions' in decoded) {
               const isAuthorized = required.filter((x) =>
                 decoded.permissions.includes(x)
-              );
+                
+                );
 
               if (isAuthorized.length === 0) return forbidden(res);
             }
@@ -37,7 +41,6 @@ const mw = (required) => {
           await renew(decoded.key);
           // Add to request
           req.user = decoded;
-          // console.log(req.user);
           return next();
         } catch (errSession) {
           return unauthorized(res);

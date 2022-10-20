@@ -7,6 +7,8 @@ import cors from 'cors';
 const app = express();
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors({ origin: 'http://127.0.0.1:4200' }));
+// app.use(cors({ origin: '*' }));
+
 
 // Constants
 const router = express.Router();

@@ -30,7 +30,8 @@ const connect = () =>
     //   }
     // );
     mongoose.connect(
-      'mongodb+srv://account_user:Account123@accounting.9fywn0k.mongodb.net/db_account'
+      // 'mongodb+srv://account_user:Account123@accounting.9fywn0k.mongodb.net/db_account'
+      'mongodb://localhost:27017/db_account'
     );
     const db = mongoose.connection;
 

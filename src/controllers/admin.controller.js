@@ -15,7 +15,7 @@ import { success, error, unauthorized } from '@/utils/helper.util';
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-
+// console.log(username, password)
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',

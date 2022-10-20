@@ -16,8 +16,22 @@ const add = async (body) => {
   return await CatagoryModel.create(body);
 };
 
+const update = async (body ,params) => {
+  // Database query
+  return await CatagoryModel.findOneAndUpdate({_id:params.id},body);
+};
+
+const Delete = async (body,params) => {
+  // Database query
+  // var data = await CatagoryModel.find(body);
+  // return data
+  return await CatagoryModel.findOneAndRemove({_id:params.id},body);
+};
+
 export default {
   getAll,
   getAllLogged,
-  add
+  add,
+  update,
+  Delete
 };

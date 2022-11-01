@@ -4,6 +4,7 @@ import AccountantBusiness from '@/business/accountant.business';
 // Utils
 import { session } from '@/utils/auth.util';
 import { success, error, unauthorized } from '@/utils/helper.util';
+import accountantBusiness from '@/business/accountant.business';
 
 /**
  * login
@@ -221,4 +222,59 @@ const getAll = async (req, res) => {
   }
 };
 
-export default { login, register, recover, me, verify, invite, getAll };
+const Addaccountent = async (req, res) => {
+  try {
+    console.log("photo ------- ",req.body)
+    
+    const data = await accountantBusiness.add(req.body);
+    console.log("data ---------------------------- ",data.photo)
+
+    let created = '_id' in data || 'n' in data;
+    // console.log("created ---------------------------- ",created)
+
+    return success(res, 201, { created });
+  } catch (err) {
+    // console.log("err ---------------------------- ",err)
+
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+const UpdateAccountent = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await accountantBusiness.update(req.body ,req.params);
+    let updated = '_id' in data || 'n' in data;
+    return success(res, 201, { updated });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+const DeleteAccountent = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await accountantBusiness.Delete(req.body ,req.params);
+    let deleted = '_id' in data || 'n' in data;
+    return success(res, 201 , { deleted });
+  } catch (err) {
+    if (err.code === 11000) {
+      // let err = 'Duplicate input';
+      error(res);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+export default { login, register, recover, me, verify, invite, getAll ,Addaccountent ,UpdateAccountent ,DeleteAccountent};

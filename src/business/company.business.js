@@ -21,9 +21,23 @@ const getAllAssigned = async (accountant_id) => {
   return await CompanyModel.find({ accountant_id: accountant_id });
 };
 
+const update = async (body ,params) => {
+  // Database query
+  return await CompanyModel.findOneAndUpdate({_id:params.id},body);
+};
+
+const Delete = async (body,params) => {
+  // Database query
+  // var data = await CatagoryModel.find(body);
+  // return data
+  return await CompanyModel.findOneAndRemove({_id:params.id},body);
+};
+
 export default {
   getAll,
   add,
   getAllLogged,
-  getAllAssigned
+  getAllAssigned,
+  update,
+  Delete
 };

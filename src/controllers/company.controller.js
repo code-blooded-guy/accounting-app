@@ -87,4 +87,37 @@ const addCompany = async (req, res) => {
   }
 };
 
-export default { getAll, getAllLogged, addCompany, getAllAssigned };
+const UpdateCompany = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await CompanyBusiness.update(req.body ,req.params);
+    let updated = '_id' in data || 'n' in data;
+    return success(res, 201, { updated });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+const DeleteCompany = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await CompanyBusiness.Delete(req.body ,req.params);
+    let deleted = '_id' in data || 'n' in data;
+    return success(res, 201 , { deleted });
+  } catch (err) {
+    if (err.code === 11000) {
+      // let err = 'Duplicate input';
+      error(res);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+export default { getAll, getAllLogged, addCompany, getAllAssigned ,UpdateCompany ,DeleteCompany};
+

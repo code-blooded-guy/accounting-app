@@ -42,6 +42,8 @@ const AddType = async (req, res) => {
   try {
     console.log(req.body)
     const data = await TypeBusiness.add(req.body);
+    console.log('data__________',data)
+
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
   } catch (err) {

@@ -20,4 +20,12 @@ router.post(
   CompanyController.addCompany
 );
 
+router.put(
+  '/api/company/:id', CompanyController.UpdateCompany
+);
+
+router.delete(
+  '/api/company/:id', CompanyController.DeleteCompany
+);
+
 export default router;

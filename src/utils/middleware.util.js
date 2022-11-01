@@ -15,7 +15,7 @@ const mw = (required) => {
       // console.log(req.headers)
 
       let token = req.headers['authorization'].replace('Bearer ', '');
-      console.log(token)
+      // console.log(token)
       if (token) {
         try {
           // Is JWT format
@@ -27,7 +27,7 @@ const mw = (required) => {
           const decoded = await check(token);
           // Validate permissions
           if (required) {
-      console.log(decoded)
+      // console.log(decoded)
             if ('permissions' in decoded) {
               const isAuthorized = required.filter((x) =>
                 decoded.permissions.includes(x)

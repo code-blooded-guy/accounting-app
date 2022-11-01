@@ -83,7 +83,9 @@ const check = async (token) => {
   try {
     const decoded = await decode(token);
     // const data = await redis.get(decoded.key);
+
     if (decoded?.key) {
+
       const [id] = decoded.key.split(':');
       // return decoded?.key && data ? { ...decoded, id } : null;
       return decoded?.key  ? { ...decoded, id } : null;
@@ -103,7 +105,7 @@ const check = async (token) => {
  */
 const renew = async (key) => {
   try {
-    await redis.expire(key, REDIS_TTL.year);
+    // await redis.expire(key, REDIS_TTL.year);
   } catch (err) {
     console.log({ err });
     return null;

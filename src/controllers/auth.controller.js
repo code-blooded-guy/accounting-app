@@ -125,9 +125,11 @@ const me = async (req, res) => {
         message: 'Invalid auth User id...'
       };
     }
-
-    if (user_id) {
+console.log(user_id,'userID')
+    if (user_id ) {
       let data = await AuthBusiness.me(user_id);
+console.log(data ,'dataa')
+
       return data ? success(res, data) : unauthorized(res);
     } else {
       return unauthorized(res);

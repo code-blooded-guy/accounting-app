@@ -44,6 +44,7 @@ const getAllLogged = async (req, res) => {
  * @param {*} res
  * @returns
  */
+
 const addCategory = async (req, res) => {
   try {
     console.log(req.body)

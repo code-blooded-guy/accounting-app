@@ -76,6 +76,19 @@ const register = async (req, res) => {
   }
 };
 
+const getAll = async (req, res) => {
+  try {
+    // Business logic
+    console.log('req.user', req.user);
+    const data = await AdminBusiness.getAll();
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
 /**
  * recover
  *
@@ -175,4 +188,4 @@ const verify = async (req, res) => {
   }
 };
 
-export default { login, register, recover, me, verify };
+export default { login, register, recover, me, verify ,getAll};

@@ -159,6 +159,7 @@ router.post('/api/admin/recover', AdminController.recover);
  * @return {object} 5XX - Error
  */
 router.get('/api/admin/me', mw(['user']), AdminController.me);
+router.get('/api/admin/getAll', mw(['admin']), AdminController.getAll);
 
 /**
  * POST /api/admin/verify

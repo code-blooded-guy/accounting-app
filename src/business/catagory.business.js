@@ -21,6 +21,7 @@ const update = async (body ,params) => {
   return await CatagoryModel.findOneAndUpdate({_id:params.id},body);
 };
 
+
 const Delete = async (body,params) => {
   // Database query
   // var data = await CatagoryModel.find(body);

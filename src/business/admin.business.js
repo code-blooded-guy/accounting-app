@@ -1,5 +1,6 @@
 // Models
 import AdminModel from '@/models/admin.model';
+import UserModel from '@/models/user.model';
 
 /**
  * login
@@ -227,10 +228,16 @@ const verify = async (username, code) => {
   }
 };
 
+const getAll = async () => {
+  // Database query
+  return await UserModel.find({});
+};
+
 export default {
   login,
   register,
   recover,
   me,
-  verify
+  verify,
+  getAll
 };

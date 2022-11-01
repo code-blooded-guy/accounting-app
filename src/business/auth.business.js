@@ -188,7 +188,7 @@ const recover = async (username) => {
  * @returns {object}
  */
 const me = async (user_id) => {
-  return await UserModel.findOne({ _id: user_id, deleted_at: null })
+  return await UserModel.find({ _id: user_id, deleted_at: null })
     .select('phone email name last_name created_at')
     .lean();
 };

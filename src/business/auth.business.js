@@ -56,7 +56,7 @@ const login = async (username, password) => {
  * @param {*} password
  * @returns {object}
  */
-const register = async (username, password, name, terms) => {
+const register = async (username, password, name, terms ,email ,phone) => {
   var code = Math.floor(1000 + Math.random() * 9000);
   const exists = await UserModel.exists({
     $or: [
@@ -81,11 +81,11 @@ const register = async (username, password, name, terms) => {
     };
 
     if (username.includes('@')) {
-      query.email = username;
-      query.phone = username;
+      query.email = email;
+      query.phone = phone;
     } else {
-      query.phone = username;
-      query.email = username;
+      query.phone = phone;
+      query.email = email;
     }
     code = '0000';
     const user = await UserModel.create({

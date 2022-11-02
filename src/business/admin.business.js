@@ -233,11 +233,25 @@ const getAll = async () => {
   return await UserModel.find({});
 };
 
+const Edit = async (body ,params) => {
+  // Database query
+  return await UserModel.findOneAndUpdate({_id:params.id},body);
+};
+
+const Delete = async (body,params) => {
+  // Database query
+  // var data = await CatagoryModel.find(body);
+  // return data
+  return await UserModel.findOneAndRemove({_id:params.id},body);
+};
+
 export default {
   login,
   register,
   recover,
   me,
   verify,
-  getAll
+  getAll,
+  Edit,
+  Delete
 };

@@ -37,4 +37,21 @@ const getAllLogged = async (req, res) => {
   }
 };
 
-export default { getAll, getAllLogged };
+const addFile = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await FileBusiness.add(req.body);
+    let created = '_id' in data || 'n' in data;
+    return success(res, 201, { created });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+}
+
+
+export default { getAll, getAllLogged,addFile }

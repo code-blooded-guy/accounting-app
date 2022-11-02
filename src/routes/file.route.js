@@ -75,4 +75,7 @@ router.get('/api/file/all', FileController.getAll);
  */
 router.get('/api/file/all/logged', mw(['user']), FileController.getAllLogged);
 
+router.post('/api/file/create', FileController.addFile);
+
+
 export default router;

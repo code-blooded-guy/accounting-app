@@ -19,7 +19,7 @@ const mw = (required) => {
       if (token) {
         try {
           // Is JWT format
-          console.log(token ,'start')
+          // console.log(token ,'start')
           if (!validator.isJWT(token)) throw 'Token is not valid';
 
           // Add Bearer to authorization Header

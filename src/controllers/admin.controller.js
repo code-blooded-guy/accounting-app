@@ -53,7 +53,6 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   try {
     const { username, password, name } = req.body;
-
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',
@@ -68,7 +67,7 @@ const register = async (req, res) => {
       };
     }
 
-    const data = await AdminBusiness.register(username, password, name);
+    const data = await AdminBusiness.register(username, password, name );
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
   } catch (err) {
@@ -86,6 +85,38 @@ const getAll = async (req, res) => {
   } catch (err) {
     // Return error (if any)
     error(res, err);
+  }
+};
+
+const EditUser = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await AdminBusiness.Edit(req.body ,req.params);
+    let updated = '_id' in data || 'n' in data;
+    return success(res, 201, { updated });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+const DeleteUser = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await AdminBusiness.Delete(req.body ,req.params);
+    let deleted = '_id' in data || 'n' in data;
+    return success(res, 201 , { deleted });
+  } catch (err) {
+    if (err.code === 11000) {
+      // let err = 'Duplicate input';
+      error(res);
+    } else {
+      error(res, err);
+    }
   }
 };
 
@@ -188,4 +219,4 @@ const verify = async (req, res) => {
   }
 };
 
-export default { login, register, recover, me, verify ,getAll};
+export default { login, register, recover, me, verify ,getAll ,EditUser ,DeleteUser};

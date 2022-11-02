@@ -160,6 +160,9 @@ router.post('/api/admin/recover', AdminController.recover);
  */
 router.get('/api/admin/me', mw(['user']), AdminController.me);
 router.get('/api/admin/getAll', mw(['admin']), AdminController.getAll);
+router.put('/api/admin/:id', AdminController.EditUser);
+router.delete('/api/admin/:id', AdminController.DeleteUser);
+
 
 /**
  * POST /api/admin/verify

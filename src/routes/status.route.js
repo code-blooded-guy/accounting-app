@@ -38,6 +38,10 @@ const router = express.Router();
  * ]
  */
 router.get('/api/status/all', StatusController.getAll);
+router.post('/api/status/create', StatusController.AddStatus);
+router.put('/api/status/:id', StatusController.UpdateStatus);
+router.delete('/api/status/:id', StatusController.DeleteStatus);
+
 
 /**
  * GET /api/status/all/logged

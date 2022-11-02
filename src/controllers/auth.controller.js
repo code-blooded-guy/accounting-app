@@ -52,8 +52,8 @@ const login = async (req, res) => {
  */
 const register = async (req, res) => {
   try {
-    const { username, password, name } = req.body;
-
+    const { username, password, name ,email ,phone} = req.body;
+   console.log(email,phone,username, password, name,'sdjhsjsads');
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',
@@ -68,7 +68,8 @@ const register = async (req, res) => {
       };
     }
 
-    const data = await AuthBusiness.register(username, password, name);
+    
+    const data = await AuthBusiness.register(username, password, name ,null ,email ,phone);
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
   } catch (err) {

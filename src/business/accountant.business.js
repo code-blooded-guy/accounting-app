@@ -263,11 +263,31 @@ const getAll = async () => {
   return await AccountantModel.find({});
 };
 
+const add = async (body) => {
+  // Database query
+  return await AccountantModel.create(body);
+};
+
+const update = async (body ,params) => {
+  // Database query
+  return await AccountantModel.findOneAndUpdate({_id:params.id},body);
+};
+
+const Delete = async (body,params) => {
+  // Database query
+  // var data = await CatagoryModel.find(body);
+  // return data
+  return await AccountantModel.findOneAndRemove({_id:params.id},body);
+};
+
 export default {
   login,
   register,
   recover,
   me,
   verify,
-  getAll
+  getAll,
+  add,
+  update,
+  Delete
 };

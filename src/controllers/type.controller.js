@@ -1,4 +1,5 @@
 // Business
+import typeBusiness from '@/business/type.business';
 import TypeBusiness from '@/business/type.business';
 import { success, error } from '@/utils/helper.util';
 // Libs
@@ -37,4 +38,53 @@ const getAllLogged = async (req, res) => {
   }
 };
 
-export default { getAll, getAllLogged };
+const AddType = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await TypeBusiness.add(req.body);
+    console.log('data__________',data)
+
+    let created = '_id' in data || 'n' in data;
+    return success(res, 201, { created });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+const UpdateType = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await typeBusiness.update(req.body ,req.params);
+    let updated = '_id' in data || 'n' in data;
+    return success(res, 201, { updated });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+const DeleteType = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await typeBusiness.Delete(req.body ,req.params);
+    let deleted = '_id' in data || 'n' in data;
+    return success(res, 201 , { deleted });
+  } catch (err) {
+    if (err.code === 11000) {
+      // let err = 'Duplicate input';
+      error(res);
+    } else {
+      error(res, err);
+    }
+  }
+};
+export default { getAll, getAllLogged ,AddType , UpdateType , DeleteType};

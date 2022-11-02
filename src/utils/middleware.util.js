@@ -12,11 +12,14 @@ import { check, renew } from '@/utils/auth.util';
 const mw = (required) => {
   return async (req, res, next) => {
     try {
-      let token = req.headers['authorization'].replace('Bearer ', '');
+      // console.log(req.headers)
 
+      let token = req.headers['authorization'].replace('Bearer ', '');
+      // console.log(token)
       if (token) {
         try {
           // Is JWT format
+          // console.log(token ,'start')
           if (!validator.isJWT(token)) throw 'Token is not valid';
 
           // Add Bearer to authorization Header
@@ -24,11 +27,17 @@ const mw = (required) => {
           // Verify Token in Redis, if exists, then return decode token { key, ...data, iat }
           const decoded = await check(token);
           // Validate permissions
+          // console.log(token ,'middele')
+
           if (required) {
+      // console.log(decoded)
+      // console.log(required ,'end')
+
             if ('permissions' in decoded) {
               const isAuthorized = required.filter((x) =>
                 decoded.permissions.includes(x)
-              );
+                
+                );
 
               if (isAuthorized.length === 0) return forbidden(res);
             }
@@ -36,13 +45,15 @@ const mw = (required) => {
           // Renew
           await renew(decoded.key);
           // Add to request
+          // console.log(decoded.key)
           req.user = decoded;
-          // console.log(req.user);
           return next();
         } catch (errSession) {
+          // console.log(errSession ,'jshajd')
           return unauthorized(res);
         }
       } else {
+
         return unauthorized(res);
       }
     } catch (err) {

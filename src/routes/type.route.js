@@ -39,6 +39,17 @@ const router = express.Router();
  */
 router.get('/api/type/all', TypeController.getAll);
 
+router.post(
+    '/api/type/create',
+    mw(['admin']),
+    TypeController.AddType
+  );
+
+ router.put('/api/type/:id', TypeController.UpdateType);
+
+ router.delete('/api/type/:id', TypeController.DeleteType);
+
+
 /**
  * GET /api/type/all/logged
  * @summary  Get all type (logged)

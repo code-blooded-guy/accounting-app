@@ -1,5 +1,6 @@
 // Models
 import AdminModel from '@/models/admin.model';
+import UserModel from '@/models/user.model';
 
 /**
  * login
@@ -227,10 +228,30 @@ const verify = async (username, code) => {
   }
 };
 
+const getAll = async () => {
+  // Database query
+  return await UserModel.find({});
+};
+
+const Edit = async (body ,params) => {
+  // Database query
+  return await UserModel.findOneAndUpdate({_id:params.id},body);
+};
+
+const Delete = async (body,params) => {
+  // Database query
+  // var data = await CatagoryModel.find(body);
+  // return data
+  return await UserModel.findOneAndRemove({_id:params.id},body);
+};
+
 export default {
   login,
   register,
   recover,
   me,
-  verify
+  verify,
+  getAll,
+  Edit,
+  Delete
 };

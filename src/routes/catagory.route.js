@@ -12,10 +12,16 @@ router.get(
   mw(['user']),
   CatagoryController.getAllLogged
 );
+
 router.post(
   '/api/category/create',
   mw(['admin']),
   CatagoryController.addCategory
 );
+
+router.put('/api/catagories/:id', CatagoryController.UpdateCategory);
+
+router.delete('/api/catagories/:id', CatagoryController.DeleteCategory);
+
 
 export default router;

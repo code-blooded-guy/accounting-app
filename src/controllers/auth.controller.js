@@ -15,7 +15,7 @@ import { success, error, unauthorized } from '@/utils/helper.util';
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-
+   
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',
@@ -52,8 +52,8 @@ const login = async (req, res) => {
  */
 const register = async (req, res) => {
   try {
-    const { username, password, name } = req.body;
-
+    const { username, password, name ,email ,phone} = req.body;
+   console.log(email,phone,username, password, name,'sdjhsjsads');
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',
@@ -68,7 +68,8 @@ const register = async (req, res) => {
       };
     }
 
-    const data = await AuthBusiness.register(username, password, name);
+    
+    const data = await AuthBusiness.register(username, password, name ,null ,email ,phone);
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
   } catch (err) {
@@ -125,9 +126,11 @@ const me = async (req, res) => {
         message: 'Invalid auth User id...'
       };
     }
-
-    if (user_id) {
+console.log(user_id,'userID')
+    if (user_id ) {
       let data = await AuthBusiness.me(user_id);
+console.log(data ,'dataa')
+
       return data ? success(res, data) : unauthorized(res);
     } else {
       return unauthorized(res);
@@ -193,4 +196,37 @@ const check = async (req, res) => {
   }
 };
 
-export default { login, register, recover, me, verify, check };
+
+const update = async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    if (validator.isEmpty(username)) {
+      throw {
+        code: 'ERROR_AUTH_1',
+        message: 'The username cannot be empty'
+      };
+    }
+    const user = await AuthBusiness.update(username);
+    console.log('user', user);
+    return success(res, 201, { exist: user });
+  } catch (err) {
+    error(res, err);
+  }
+};
+
+
+
+const getAll = async (req, res) => {
+  try {
+    // Business logic
+    const data = await AuthBusiness.getAll();
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
+export default {getAll, update,login, register, recover, me, verify, check };

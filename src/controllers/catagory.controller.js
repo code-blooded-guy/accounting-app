@@ -44,19 +44,59 @@ const getAllLogged = async (req, res) => {
  * @param {*} res
  * @returns
  */
+
 const addCategory = async (req, res) => {
   try {
+    console.log(req.body)
     const data = await CatagoryBusiness.add(req.body);
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
   } catch (err) {
     if (err.code === 11000) {
-      let error = 'Duplicate input';
-      error(res, error);
+      let err = 'Duplicate input';
+      error(res, err);
     } else {
       error(res, err);
     }
   }
 };
 
-export default { getAll, getAllLogged, addCategory };
+const UpdateCategory = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await CatagoryBusiness.update(req.body ,req.params);
+    let updated = '_id' in data || 'n' in data;
+    return success(res, 201, { updated });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+
+const DeleteCategory = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await CatagoryBusiness.Delete(req.body ,req.params);
+    let deleted = '_id' in data || 'n' in data;
+    return success(res, 201 , { deleted });
+  } catch (err) {
+    if (err.code === 11000) {
+      // let err = 'Duplicate input';
+      error(res);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+
+export default { getAll, getAllLogged, addCategory ,UpdateCategory ,DeleteCategory}
+
+// /
+// export default { getAll, getAllLogged, addCategory};
+// >>>>>>> Stashed changes

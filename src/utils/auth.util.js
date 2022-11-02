@@ -62,7 +62,7 @@ const session = async (id, data) => {
     const key = `${id}:${hash(8)}`;
     const token = await sign({ key, ...data });
     if (token) {
-      await redis.set(key, moment().toISOString(), 'EX', REDIS_TTL.year);
+      // await redis.set(key, moment().toISOString(), 'EX', REDIS_TTL.year);
       return token;
     } else {
       throw 'The key could not be created';
@@ -82,10 +82,13 @@ const session = async (id, data) => {
 const check = async (token) => {
   try {
     const decoded = await decode(token);
-    const data = await redis.get(decoded.key);
+    // const data = await redis.get(decoded.key);
+
     if (decoded?.key) {
+
       const [id] = decoded.key.split(':');
-      return decoded?.key && data ? { ...decoded, id } : null;
+      // return decoded?.key && data ? { ...decoded, id } : null;
+      return decoded?.key  ? { ...decoded, id } : null;
     } else {
       return null;
     }
@@ -102,7 +105,7 @@ const check = async (token) => {
  */
 const renew = async (key) => {
   try {
-    await redis.expire(key, REDIS_TTL.year);
+    // await redis.expire(key, REDIS_TTL.year);
   } catch (err) {
     console.log({ err });
     return null;
@@ -124,3 +127,4 @@ const destroy = async (key) => {
 };
 
 export { session, check, destroy, sign, decode, hash, renew };
+

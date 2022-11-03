@@ -11,7 +11,13 @@ const getAllLogged = async (user_id) => {
   return await FileModel.find({ user_id });
 };
 
+const add = async (body) => {
+  // Database query
+  return await FileModel.create(body);
+};
+
 export default {
   getAll,
-  getAllLogged
+  getAllLogged,
+  add
 };

@@ -42,7 +42,6 @@ router.post('/api/status/create', StatusController.AddStatus);
 router.put('/api/status/:id', StatusController.UpdateStatus);
 router.delete('/api/status/:id', StatusController.DeleteStatus);
 
-
 /**
  * GET /api/status/all/logged
  * @summary  Get all status (logged)

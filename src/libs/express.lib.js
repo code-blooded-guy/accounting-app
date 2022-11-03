@@ -23,7 +23,7 @@ const create = async (routes) => {
   // parse body params and attache them to req.body
   app.use(
     bodyParser.json({
-      limit: '25mb',
+      limit: '25mb',  
       extended: true
     })
   );

@@ -9,7 +9,7 @@ const schema = new Schema(
       default: null
     },
     file: {
-      data: Buffer,
+      type: Buffer,
       contentType: String
     },
     type_id: {

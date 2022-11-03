@@ -15,8 +15,13 @@ const add = async (body) => {
   return await FileModel.create(body);
 };
 
+const add = async (body) => {
+  // Database query
+  return await FileModel.create(body);
+};
+
 export default {
   getAll,
-  add ,
-  getAllLogged
+  getAllLogged,
+  add
 };

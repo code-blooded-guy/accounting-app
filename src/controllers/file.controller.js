@@ -4,6 +4,7 @@ import { success, error } from '@/utils/helper.util';
 // Libs
 import validator from 'validator';
 
+
 const getAll = async (req, res) => {
   try {
     // Business logic
@@ -37,10 +38,12 @@ const getAllLogged = async (req, res) => {
   }
 };
 
-const addFile = async (req, res) => {
+const Addfile = async (req, res,bindata ) => {
   try {
-    console.log(req.body)
-    const data = await FileBusiness.add(req.body);
+    console.log(req.body , 'file________')
+    const data = await FileBusiness.add({...req.body,file:bindata});
+    console.log('data__________',data)
+
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
   } catch (err) {
@@ -51,7 +54,6 @@ const addFile = async (req, res) => {
       error(res, err);
     }
   }
-}
+};
 
-
-export default { getAll, getAllLogged,addFile }
+export default { getAll, getAllLogged ,Addfile };

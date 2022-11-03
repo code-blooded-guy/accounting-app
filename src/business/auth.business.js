@@ -251,7 +251,14 @@ const check = async (username) => {
   return !!user;
 };
 
+
+const getAll = async () => {
+  // Database query
+  return await UserModel.find({});
+};
+
 export default {
+  getAll ,
   login,
   register,
   recover,

@@ -196,4 +196,37 @@ const check = async (req, res) => {
   }
 };
 
-export default { login, register, recover, me, verify, check };
+
+const update = async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    if (validator.isEmpty(username)) {
+      throw {
+        code: 'ERROR_AUTH_1',
+        message: 'The username cannot be empty'
+      };
+    }
+    const user = await AuthBusiness.update(username);
+    console.log('user', user);
+    return success(res, 201, { exist: user });
+  } catch (err) {
+    error(res, err);
+  }
+};
+
+
+
+const getAll = async (req, res) => {
+  try {
+    // Business logic
+    const data = await AuthBusiness.getAll();
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
+export default {getAll, update,login, register, recover, me, verify, check };

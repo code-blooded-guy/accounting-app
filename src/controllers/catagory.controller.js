@@ -94,4 +94,9 @@ const DeleteCategory = async (req, res) => {
   }
 };
 
-export default { getAll, getAllLogged, addCategory ,UpdateCategory ,DeleteCategory};
+
+export default { getAll, getAllLogged, addCategory ,UpdateCategory ,DeleteCategory}
+
+// /
+// export default { getAll, getAllLogged, addCategory};
+// >>>>>>> Stashed changes

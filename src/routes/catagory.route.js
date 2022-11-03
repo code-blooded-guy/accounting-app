@@ -12,6 +12,7 @@ router.get(
   mw(['user']),
   CatagoryController.getAllLogged
 );
+
 router.post(
   '/api/category/create',
   mw(['admin']),

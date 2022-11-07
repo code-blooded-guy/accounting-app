@@ -48,8 +48,8 @@ const schema = new Schema({
     default: null
   },
   photo: {
-    data: Buffer,
-    contentType: String
+    type: String,
+    // contentType: String
   },
   subscription_id: {
     type: Schema.Types.ObjectId,

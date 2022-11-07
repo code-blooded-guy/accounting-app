@@ -43,35 +43,15 @@ const router = express.Router();
  * ]
  */
 router.get('/api/file/all', FileController.getAll);
+router.put('/api/file/:id', FileController.UpdateFile);
+router.delete('/api/file/:id', FileController.DeleteFile);
 
 router.post('/upload',
     fileUpload({ createParentPath: true }),
     filesPayloadExists,
     // fileExtLimiter(['.png', '.jpg', '.jpeg']),
     fileSizeLimiter,
-    (req, res) => {
-        console.log('first______',req.body )
-        const files = req.body.file
-        // console.log(files)
-        var bindata = new Buffer(files.split(",")[1],"base64");
-        // var bindata = new Buffer([10,20,30]);
-        // console.log(bindata)
-
-
-     fileController.Addfile(req , res,bindata )
-
-        // Object.keys(files).forEach(key => {
-        //     console.log(files[key] ,'files')
-
-        //     const filepath = path.join(__dirname, 'files', files[key].name)
-        //     console.log(filepath ,'path')
-        //     files[key].mv(filepath, (err) => {
-        //         if (err) return res.status(500).json({ status: "error", message: err })
-        //     })
-        // })
-
-        // return res.json({ status: 'success', message: Object.keys(files).toString() })
-    }
+    fileController.Addfile
 )
 
 

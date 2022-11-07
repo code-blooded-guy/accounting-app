@@ -9,8 +9,8 @@ const schema = new Schema(
       default: null
     },
     file: {
-      type: Buffer,
-      contentType: String
+      type: String,
+      // contentType: String
     },
     type_id: {
       type: Schema.Types.ObjectId,

@@ -13,8 +13,8 @@ const schema = new Schema(
       default: null
     },
     company_logo: {
-      data: Buffer,
-      contentType: String
+      type: String,
+      // contentType: String
     },
     catagory_id: {
       type: Schema.Types.ObjectId,

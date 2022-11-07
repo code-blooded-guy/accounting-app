@@ -44,8 +44,8 @@ const schema = new Schema({
     default: ['accountant', 'user', 'admin']
   },
   photo: {
-    data: Buffer,
-    contentType: String
+    type: String,
+    // contentType: String
   },
   created_at: {
     type: Date,

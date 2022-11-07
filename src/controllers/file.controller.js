@@ -9,7 +9,19 @@ const getAll = async (req, res) => {
   try {
     // Business logic
     const data = await FileBusiness.getAll();
+    console.log("data --- ",data)
+  //  let abcd =  data.map(i=>{
+  //     let  base64data = Buffer.from(i.file.buffer, 'binary').toString('base64');
+
+  //     return {...i,_doc:{...i._doc,file:base64data}
+        
+  //       // ,file:base64data
+  //     }
+  //   })
     // Return success
+// console.log('base64data______',abcd)
+// var newData = (data.replace(data[0].file.buffer),base64data)
+// console.log(newData)
     success(res, data);
   } catch (err) {
     // Return error (if any)
@@ -38,10 +50,10 @@ const getAllLogged = async (req, res) => {
   }
 };
 
-const Addfile = async (req, res,bindata ) => {
+const Addfile = async (req, res ) => {
   try {
     console.log(req.body , 'file________')
-    const data = await FileBusiness.add({...req.body,file:bindata});
+    const data = await FileBusiness.add(req.body);
     console.log('data__________',data)
 
     let created = '_id' in data || 'n' in data;
@@ -56,4 +68,36 @@ const Addfile = async (req, res,bindata ) => {
   }
 };
 
-export default { getAll, getAllLogged ,Addfile };
+const UpdateFile = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await FileBusiness.update(req.body ,req.params);
+    let updated = '_id' in data || 'n' in data;
+    return success(res, 201, { updated });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+const DeleteFile = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await FileBusiness.Delete(req.body ,req.params);
+    let deleted = '_id' in data || 'n' in data;
+    return success(res, 201 , { deleted });
+  } catch (err) {
+    if (err.code === 11000) {
+      // let err = 'Duplicate input';
+      error(res);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+export default { getAll, getAllLogged ,Addfile ,UpdateFile ,DeleteFile};

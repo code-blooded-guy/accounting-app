@@ -17,8 +17,8 @@ const schema = new Schema(
       default: null
     },
     icon: {
-      data: Buffer,
-      contentType: String
+      type: String,
+      // contentType: String
     },
     isActive: {
       type: Boolean,

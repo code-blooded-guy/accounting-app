@@ -49,6 +49,8 @@ router.post(
 
  router.delete('/api/type/:id', TypeController.DeleteType);
 
+ 
+
 
 /**
  * GET /api/type/all/logged

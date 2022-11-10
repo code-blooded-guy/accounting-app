@@ -63,6 +63,23 @@ const getAllAssigned = async (req, res) => {
   }
 };
 
+
+const getAllById = async (req, res) => {
+  try {
+    // Get current user id from session
+    const _id = req.params.id;
+
+    console.log('_id',_id);
+    const data = await CompanyBusiness.getAllById(_id);
+    console.log('data', data);
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
 /**
  * Add Company
  *
@@ -119,5 +136,5 @@ const DeleteCompany = async (req, res) => {
   }
 };
 
-export default { getAll, getAllLogged, addCompany, getAllAssigned ,UpdateCompany ,DeleteCompany};
+export default { getAll, getAllLogged, addCompany, getAllAssigned ,UpdateCompany ,DeleteCompany ,getAllById};
 

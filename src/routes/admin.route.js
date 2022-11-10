@@ -164,6 +164,12 @@ router.put('/api/admin/:id', AdminController.EditUser);
 router.delete('/api/admin/:id', AdminController.DeleteUser);
 
 
+router.get('/api/admin/all', AdminController.getAllAdmin);
+router.put('/api/admin/all/:id', AdminController.UpdateAdmin);
+router.delete('/api/admin/all/:id', AdminController.DeleteAdmin);
+// router.post('/api/admin/create', AdminController.AddAdmin);
+
+
 /**
  * POST /api/admin/verify
  * @summary Verify account

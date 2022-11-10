@@ -57,15 +57,15 @@ const login = async (username, password) => {
  * @param {*} password
  * @returns {object}
  */
-const register = async (username, password, name, terms) => {
+const register = async (password, name ,phone ,photo ,email ,isSuperAdmin, terms) => {
   var code = Math.floor(1000 + Math.random() * 9000);
   const exists = await AdminModel.exists({
     $or: [
       {
-        email: username
+        email: email
       },
       {
-        phone: username
+        phone: phone
       }
     ]
   });
@@ -73,17 +73,22 @@ const register = async (username, password, name, terms) => {
   if (exists) {
     throw {
       code: 'ERROR_REGISTER_1',
-      message: `${username} is already registered`,
-      params: { username }
+      message: `${email} is already registered`,
+      params: { email }
     };
   } else {
     const query = { name: name };
 
-    if (username.includes('@')) {
-      query.email = username;
+    if (email.includes('@')) {
+      query.email = email;
+      query.name = name;
+      query.phone = phone;
+      query.photo = photo;
+      query.isSuperAdmin = isSuperAdmin;
+
       // query.phone = username;
     } else {
-      query.phone = username;
+      // query.phone = username;
       // query.email = username;
     }
     code = '0000';
@@ -97,7 +102,7 @@ const register = async (username, password, name, terms) => {
     // const page = await PagesModel.create({ admin: admin._id });
 
     // Send Code
-    if (username.includes('@')) {
+    if (email.includes('@')) {
       // sendEmail({
       //   to: username,
       //   from: "hi@nodetomic.com",
@@ -233,6 +238,16 @@ const getAll = async () => {
   return await UserModel.find({});
 };
 
+const getAllAdmin = async () => {
+  // Database query
+  return await AdminModel.find({});
+};
+
+const add = async (body) => {
+  // Database query
+  return await AdminModel.create(body);
+};
+
 const Edit = async (body ,params) => {
   // Database query
   return await UserModel.findOneAndUpdate({_id:params.id},body);
@@ -245,6 +260,19 @@ const Delete = async (body,params) => {
   return await UserModel.findOneAndRemove({_id:params.id},body);
 };
 
+
+const updateAdmin = async (body ,params) => {
+  // Database query
+  return await AdminModel.findOneAndUpdate({_id:params.id},body);
+};
+
+const DeleteAdmin = async (body,params) => {
+  // Database query
+  // var data = await CatagoryModel.find(body);
+  // return data
+  return await AdminModel.findOneAndRemove({_id:params.id},body);
+};
+
 export default {
   login,
   register,
@@ -253,5 +281,9 @@ export default {
   verify,
   getAll,
   Edit,
-  Delete
+  Delete,
+  add,
+  updateAdmin,
+  DeleteAdmin,
+  getAllAdmin
 };

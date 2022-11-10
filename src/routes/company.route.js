@@ -1,3 +1,4 @@
+
 import express from 'express';
 // Controllers
 import CompanyController from '@/controllers/company.controller';
@@ -12,6 +13,12 @@ router.get(
   '/api/company/accountant',
   mw(['accountant']),
   CompanyController.getAllAssigned
+);
+
+router.get(
+  '/api/company/accountant/:id',
+  mw(['accountant']),
+  CompanyController.getAllById
 );
 
 router.post(

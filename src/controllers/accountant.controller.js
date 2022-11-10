@@ -103,6 +103,7 @@ const invite = async (req, res) => {
       name,
       company_id
     );
+    console.log('account data',data)
     let invited = '_id' in data || 'n' in data;
 
     return success(res, 201, { invited });
@@ -224,10 +225,10 @@ const getAll = async (req, res) => {
 
 const Addaccountent = async (req, res) => {
   try {
-    console.log("photo ------- ",req.body)
+    // console.log("photo ------- ",req.body)
     
     const data = await accountantBusiness.add(req.body);
-    console.log("data ---------------------------- ",data.photo)
+    // console.log("data ---------------------------- ",data.photo)
 
     let created = '_id' in data || 'n' in data;
     // console.log("created ---------------------------- ",created)

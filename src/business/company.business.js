@@ -21,6 +21,12 @@ const getAllAssigned = async (accountant_id) => {
   return await CompanyModel.find({ accountant_id: accountant_id });
 };
 
+const getAllById = async (_id) => {
+  // Database query
+  // console.log('acc', typeof accountant_id);
+  return await CompanyModel.find({ _id});
+};
+
 const update = async (body ,params) => {
   // Database query
   return await CompanyModel.findOneAndUpdate({_id:params.id},body);
@@ -39,5 +45,6 @@ export default {
   getAllLogged,
   getAllAssigned,
   update,
-  Delete
+  Delete,
+  getAllById
 };

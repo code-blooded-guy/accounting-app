@@ -52,8 +52,9 @@ const login = async (req, res) => {
  */
 const register = async (req, res) => {
   try {
-    const { username, password, name } = req.body;
-    if (validator.isEmpty(username)) {
+    const {  password, name ,phone ,photo ,email ,isSuperAdmin} = req.body;
+    console.log('_____body',req.body)
+    if (validator.isEmpty(email)) {
       throw {
         code: 'ERROR_AUTH_1',
         message: 'The username cannot be empty'
@@ -66,8 +67,10 @@ const register = async (req, res) => {
         message: 'The password cannot be empty'
       };
     }
+    console.log('data________')
 
-    const data = await AdminBusiness.register(username, password, name );
+    const data = await AdminBusiness.register(password, name ,phone ,photo ,email ,isSuperAdmin );
+    console.log('data________',data)
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
   } catch (err) {
@@ -75,11 +78,26 @@ const register = async (req, res) => {
   }
 };
 
+
+
 const getAll = async (req, res) => {
   try {
     // Business logic
     console.log('req.user', req.user);
     const data = await AdminBusiness.getAll();
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
+const getAllAdmin = async (req, res) => {
+  try {
+    // Business logic
+    console.log('req.user', req.user);
+    const data = await AdminBusiness.getAllAdmin();
     // Return success
     success(res, data);
   } catch (err) {
@@ -219,4 +237,55 @@ const verify = async (req, res) => {
   }
 };
 
-export default { login, register, recover, me, verify ,getAll ,EditUser ,DeleteUser};
+// const AddAdmin = async (req, res) => {
+//   try {
+//     console.log(req.body)
+//     const data = await AdminBusiness.add(req.body);
+//     console.log('data__________',data)
+
+//     let created = '_id' in data || 'n' in data;
+//     return success(res, 201, { created });
+//   } catch (err) {
+//     if (err.code === 11000) {
+//       let err = 'Duplicate input';
+//       error(res, err);
+//     } else {
+//       error(res, err);
+//     }
+//   }
+// };
+
+
+const UpdateAdmin = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await AdminBusiness.updateAdmin(req.body ,req.params);
+    let updated = '_id' in data || 'n' in data;
+    return success(res, 201, { updated });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+const DeleteAdmin = async (req, res) => {
+  try {
+    console.log(req.body)
+    const data = await AdminBusiness.DeleteAdmin(req.body ,req.params);
+    let deleted = '_id' in data || 'n' in data;
+    return success(res, 201 , { deleted });
+  } catch (err) {
+    if (err.code === 11000) {
+      // let err = 'Duplicate input';
+      error(res);
+    } else {
+      error(res, err);
+    }
+  }
+};
+
+export default { login, register, recover, me, verify ,getAll ,EditUser ,DeleteUser ,UpdateAdmin ,DeleteAdmin , getAllAdmin};

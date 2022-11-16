@@ -1,4 +1,5 @@
 // Business
+import companyBusiness from '@/business/company.business';
 import CompanyBusiness from '@/business/company.business';
 import { success, error } from '@/utils/helper.util';
 // Libs
@@ -64,6 +65,23 @@ const getAllAssigned = async (req, res) => {
 };
 
 
+const getAllinvite = async (req, res) => {
+  try {
+    // Get current user id from session
+    const accountant_id = req.user.id;
+    const  accountant_status = req.params.accountant_status
+    // Business logic
+    console.log('accountant_id', accountant_id ,accountant_status);
+    const data = await CompanyBusiness.getAllInvited(accountant_id , accountant_status);
+    console.log('data', data);
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
 const getAllById = async (req, res) => {
   try {
     // Get current user id from session
@@ -76,6 +94,26 @@ const getAllById = async (req, res) => {
     success(res, data);
   } catch (err) {
     // Return error (if any)
+    error(res, err);
+  }
+};
+
+const Approve = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('1 -------- ', id);
+    
+    const name = 'Approved Member';  
+
+    const data = await companyBusiness.approve(
+      id,
+      name
+    );
+    console.log('Appove data',data)
+    let Appoved = '_id' in data || 'n' in data;
+
+    return success(res, 201, { Appoved });
+  } catch (err) {
     error(res, err);
   }
 };
@@ -136,5 +174,5 @@ const DeleteCompany = async (req, res) => {
   }
 };
 
-export default { getAll, getAllLogged, addCompany, getAllAssigned ,UpdateCompany ,DeleteCompany ,getAllById};
+export default { getAll, getAllLogged, addCompany, getAllAssigned ,UpdateCompany ,DeleteCompany ,getAllById , getAllinvite ,Approve};
 

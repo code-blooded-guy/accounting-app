@@ -61,7 +61,7 @@ const login = async (username, password) => {
  * @returns {object}
  */
 const register = async (username, password, name, company_id = null) => {
-  var code = Math.floor(1000 + Math.random() * 9000);
+  var  code = Math.floor(1000 + Math.random() * 9000);
   const exists = await AccountantModel.exists({
     $or: [
       {
@@ -86,7 +86,7 @@ const register = async (username, password, name, company_id = null) => {
   code = '0000';
   var accountant;
   if (exists) {
-    accountant = await AccountantModel.updateOne(
+    accountant = await AccountantModel.findOneAndUpdate(
       {
         $or: [
           {
@@ -103,7 +103,8 @@ const register = async (username, password, name, company_id = null) => {
         code_verification: code
       }
     );
-  } else {
+  } 
+  else {
     accountant = await AccountantModel.create({
       ...query,
       password,
@@ -111,13 +112,14 @@ const register = async (username, password, name, company_id = null) => {
     });
   }
   if (accountant && company_id) {
+    console.log('new ',accountant,exists)
     let company = await CompanyModel.updateOne(
       {
         _id: company_id
       },
       {
         accountant_id: accountant._id,
-        accountant_status: 'Invited'
+        accountant_status: 'Invited' 
       }
     );
   }

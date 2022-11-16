@@ -1,5 +1,6 @@
 // Models
 import CompanyModel from '@/models/company.model';
+import { async } from '@babel/runtime/helpers/regeneratorRuntime';
 
 const getAll = async () => {
   // Database query
@@ -21,6 +22,12 @@ const getAllAssigned = async (accountant_id) => {
   return await CompanyModel.find({ accountant_id: accountant_id });
 };
 
+const getAllInvited = async (accountant_id) => {
+  // Database query
+  console.log('acc', typeof accountant_id);
+  return await CompanyModel.find({ accountant_id: accountant_id , accountant_status: 'Invited'});
+};
+
 const getAllById = async (_id) => {
   // Database query
   // console.log('acc', typeof accountant_id);
@@ -39,6 +46,20 @@ const Delete = async (body,params) => {
   return await CompanyModel.findOneAndRemove({_id:params.id},body);
 };
 
+const approve = async (company_id) => {
+
+  let company = await CompanyModel.findOneAndUpdate(
+    {
+      _id: company_id
+    },
+    {
+      // accountant_id: accountant._id,
+      accountant_status: 'Approve'
+    }
+  );
+   return company;
+}
+
 export default {
   getAll,
   add,
@@ -46,5 +67,7 @@ export default {
   getAllAssigned,
   update,
   Delete,
-  getAllById
+  getAllById,
+  getAllInvited,
+  approve
 };

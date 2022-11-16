@@ -16,6 +16,17 @@ router.get(
 );
 
 router.get(
+  '/api/company/accountant/invited',
+  mw(['accountant']),
+  CompanyController.getAllinvite
+);
+
+router.put(
+  '/api/company/accountant/Approve/:id', CompanyController.Approve
+);
+
+
+router.get(
   '/api/company/accountant/:id',
   mw(['accountant']),
   CompanyController.getAllById

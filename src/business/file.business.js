@@ -28,10 +28,23 @@ const Delete = async (body,params) => {
   return await FileModel.findOneAndRemove({_id:params.id},body);
 };
 
+
+const getAllById = async (_id) => {
+  
+  return await FileModel.findOne({ _id});
+};
+
+const getAllTypeId = async (type_id) => {
+  
+  return await FileModel.find({type_id});
+};
+
 export default {
   getAll,
   getAllLogged,
   add,
   update,
-  Delete
+  Delete,
+  getAllById,
+  getAllTypeId
 };

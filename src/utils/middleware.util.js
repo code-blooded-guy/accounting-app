@@ -2,7 +2,7 @@ import validator from 'validator';
 // Utils
 import { forbidden, unauthorized, error } from '@/utils/helper.util';
 import { check, renew } from '@/utils/auth.util';
-import  path  from 'path';
+import path from 'path';
 
 /**
  * mw
@@ -13,8 +13,6 @@ import  path  from 'path';
 const mw = (required) => {
   return async (req, res, next) => {
     try {
-      // console.log(req.headers)
-
       let token = req.headers['authorization'].replace('Bearer ', '');
       // console.log(token)
       if (token) {
@@ -31,14 +29,13 @@ const mw = (required) => {
           // console.log(token ,'middele')
 
           if (required) {
-      // console.log(decoded)
-      // console.log(required ,'end')
+            // console.log(decoded)
+            // console.log(required ,'end')
 
             if ('permissions' in decoded) {
               const isAuthorized = required.filter((x) =>
                 decoded.permissions.includes(x)
-                
-                );
+              );
 
               if (isAuthorized.length === 0) return forbidden(res);
             }
@@ -54,7 +51,6 @@ const mw = (required) => {
           return unauthorized(res);
         }
       } else {
-
         return unauthorized(res);
       }
     } catch (err) {
@@ -102,62 +98,65 @@ const mws = async (socket, next) => {
 
 const fileExtLimiter = (allowedExtArray) => {
   return (req, res, next) => {
-      const files = req.body.file
-      const fileExtensions = []
-      Object.keys(files).forEach(key => {
-        console.log(files[key].name)
-          fileExtensions.push(path.extname(files[key].name))
-      })
+    const files = req.body.file;
+    // console.log("extenstion  ---- ",files.substring(files.indexOf("/")+1, files.indexOf(";")))
+    const allowed = allowedExtArray.includes(  '.' + files.substring(files.indexOf('/') + 1, files.indexOf(';')));
+    
+    if (!allowed) {
+      const message =
+        `Upload failed. Only ${allowedExtArray.toString()} files allowed.`.replaceAll(
+          ',',
+          ', '
+        );
 
-      // Are the file extension allowed? 
-      const allowed = fileExtensions.every(ext => allowedExtArray.includes(ext))
+      return res.status(422).json({ status: 'error', message });
+    }
 
-      if (!allowed) {
-          const message = `Upload failed. Only ${allowedExtArray.toString()} files allowed.`.replaceAll(",", ", ");
+    next();
+  };
+};
 
-          return res.status(422).json({ status: "error", message });
-      }
-
-      next()
-  }
-}
-
-
-const MB = 5; // 5 MB 
+const MB = 5; // 5 MB
 const FILE_SIZE_LIMIT = MB * 1024 * 1024;
 
 const fileSizeLimiter = (req, res, next) => {
-    const files = req.body.file
+  const files = req.body.file;
 
-    const filesOverLimit = []
-    // Which files are over the limit?
-    Object.keys(files).forEach(key => {
-        if (files[key].size > FILE_SIZE_LIMIT) {
-            filesOverLimit.push(files[key].name)
-        }
-    })
+  // console.log("files -------- ",files)
 
-    if (filesOverLimit.length) {
-        const properVerb = filesOverLimit.length > 1 ? 'are' : 'is';
-
-        const sentence = `Upload failed. ${filesOverLimit.toString()} ${properVerb} over the file size limit of ${MB} MB.`.replaceAll(",", ", ");
-
-        const message = filesOverLimit.length < 3
-            ? sentence.replace(",", " and")
-            : sentence.replace(/,(?=[^,]*$)/, " and");
-
-        return res.status(413).json({ status: "error", message });
-
+  const filesOverLimit = [];
+  // Which files are over the limit?
+  Object.keys(files).forEach((key) => {
+    if (files[key].size > FILE_SIZE_LIMIT) {
+      filesOverLimit.push(files[key].name);
     }
+  });
 
-    next()
-}
+  if (filesOverLimit.length) {
+    const properVerb = filesOverLimit.length > 1 ? 'are' : 'is';
 
+    const sentence =
+      `Upload failed. ${filesOverLimit.toString()} ${properVerb} over the file size limit of ${MB} MB.`.replaceAll(
+        ',',
+        ', '
+      );
+
+    const message =
+      filesOverLimit.length < 3
+        ? sentence.replace(',', ' and')
+        : sentence.replace(/,(?=[^,]*$)/, ' and');
+
+    return res.status(413).json({ status: 'error', message });
+  }
+
+  next();
+};
 
 const filesPayloadExists = (req, res, next) => {
-  if (!req.body.file) return res.status(400).json({ status: "error", message: "Missing files" })
- 
-  next()
-}
+  if (!req.body.file)
+    return res.status(400).json({ status: 'error', message: 'Missing files' });
 
-export { mw, mws ,fileExtLimiter ,fileSizeLimiter ,filesPayloadExists};
+  next();
+};
+
+export { mw, mws, fileExtLimiter, fileSizeLimiter, filesPayloadExists };

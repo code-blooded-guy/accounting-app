@@ -257,6 +257,11 @@ const getAll = async () => {
   return await UserModel.find({});
 };
 
+const add = async (body) => {
+  // Database query
+  return await UserModel.create(body);
+};
+
 export default {
   getAll ,
   login,
@@ -264,5 +269,6 @@ export default {
   recover,
   me,
   verify,
-  check
+  check,
+  add
 };

@@ -1,4 +1,5 @@
 // Business
+import fileBusiness from '@/business/file.business';
 import FileBusiness from '@/business/file.business';
 import { success, error } from '@/utils/helper.util';
 // Libs
@@ -9,7 +10,7 @@ const getAll = async (req, res) => {
   try {
     // Business logic
     const data = await FileBusiness.getAll();
-    console.log("data --- ",data)
+    // console.log("data --- ",data)
   //  let abcd =  data.map(i=>{
   //     let  base64data = Buffer.from(i.file.buffer, 'binary').toString('base64');
 
@@ -50,11 +51,44 @@ const getAllLogged = async (req, res) => {
   }
 };
 
+
+const getAllById = async (req, res) => {
+  try {
+    // Get current user id from session
+    const _id = req.params.id;
+
+    // console.log('_id',_id);
+    const data = await fileBusiness.getAllById(_id);
+    // console.log('data', data);
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
+const getAllTypeId = async (req, res) => {
+  try {
+    // Get current user id from session
+    const type_id = req.params.type_id;
+
+    console.log('_id',type_id);
+    const data = await fileBusiness.getAllTypeId(type_id);
+    // console.log('data', data);
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
 const Addfile = async (req, res ) => {
   try {
-    console.log(req.body , 'file________')
+    // console.log(req.body , 'file________')
     const data = await FileBusiness.add(req.body);
-    console.log('data__________',data)
+    // console.log('data__________',data)
 
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
@@ -70,7 +104,7 @@ const Addfile = async (req, res ) => {
 
 const UpdateFile = async (req, res) => {
   try {
-    console.log(req.body)
+    // console.log(req.body)
     const data = await FileBusiness.update(req.body ,req.params);
     let updated = '_id' in data || 'n' in data;
     return success(res, 201, { updated });
@@ -100,4 +134,4 @@ const DeleteFile = async (req, res) => {
   }
 };
 
-export default { getAll, getAllLogged ,Addfile ,UpdateFile ,DeleteFile};
+export default { getAll, getAllLogged ,Addfile ,UpdateFile ,DeleteFile ,getAllById ,getAllTypeId};

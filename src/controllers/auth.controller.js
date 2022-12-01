@@ -15,7 +15,7 @@ import { success, error, unauthorized } from '@/utils/helper.util';
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-   
+
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',
@@ -52,8 +52,8 @@ const login = async (req, res) => {
  */
 const register = async (req, res) => {
   try {
-    const { username, password, name ,email ,phone} = req.body;
-   console.log(email,phone,username, password, name,'sdjhsjsads');
+    const { username, password, name, email, phone } = req.body;
+    console.log(email, phone, username, password, name, 'sdjhsjsads');
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',
@@ -68,12 +68,38 @@ const register = async (req, res) => {
       };
     }
 
-    
-    const data = await AuthBusiness.register(username, password, name ,null ,email ,phone);
+   
+
+    const data = await AuthBusiness.register(
+      username,
+      password,
+      name,
+      null,
+      email,
+      phone
+    );
     let created = '_id' in data || 'n' in data;
     return success(res, 201, { created });
   } catch (err) {
     error(res, err);
+  }
+};
+
+const uploadFile = async (req, res) => {
+  try {
+    // console.log(req.body , 'file________')
+    const data = await AuthBusiness.add(req.body);
+    // console.log('data__________',data)
+
+    let created = '_id' in data || 'n' in data;
+    return success(res, 201, { created });
+  } catch (err) {
+    if (err.code === 11000) {
+      let err = 'Duplicate input';
+      error(res, err);
+    } else {
+      error(res, err);
+    }
   }
 };
 
@@ -126,10 +152,10 @@ const me = async (req, res) => {
         message: 'Invalid auth User id...'
       };
     }
-console.log(user_id,'userID')
-    if (user_id ) {
+    console.log(user_id, 'userID');
+    if (user_id) {
       let data = await AuthBusiness.me(user_id);
-console.log(data ,'dataa')
+      console.log(data, 'dataa');
 
       return data ? success(res, data) : unauthorized(res);
     } else {
@@ -196,7 +222,6 @@ const check = async (req, res) => {
   }
 };
 
-
 const update = async (req, res) => {
   try {
     const { username } = req.body;
@@ -215,8 +240,6 @@ const update = async (req, res) => {
   }
 };
 
-
-
 const getAll = async (req, res) => {
   try {
     // Business logic
@@ -229,4 +252,14 @@ const getAll = async (req, res) => {
   }
 };
 
-export default {getAll, update,login, register, recover, me, verify, check };
+export default {
+  getAll,
+  update,
+  login,
+  register,
+  recover,
+  me,
+  verify,
+  check,
+  uploadFile
+};

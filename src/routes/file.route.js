@@ -28,7 +28,7 @@ const router = express.Router();
  *   },
  *   {
  *     "_id":"60d200765299bd36806d899a",
- *     "name":"Zeus",
+ *     "name":"Zeus",   
  *     "race":"Chihuahua",
  *     "user_id": "6108db02bb8ea9e69b2984a2",
  *     "created_at":"2021-06-22T15:23:34.522Z"
@@ -45,15 +45,16 @@ const router = express.Router();
 router.get('/api/file/all', FileController.getAll);
 router.put('/api/file/:id', FileController.UpdateFile);
 router.delete('/api/file/:id', FileController.DeleteFile);
+router.get('/api/file/all/:id', FileController.getAllById);
+router.get('/api/file/all/type/:type_id', FileController.getAllTypeId);
 
 router.post('/upload',
     fileUpload({ createParentPath: true }),
     filesPayloadExists,
-    // fileExtLimiter(['.png', '.jpg', '.jpeg']),
+    fileExtLimiter(['.png', '.jpg', '.jpeg' ,'.pdf']),
     fileSizeLimiter,
     fileController.Addfile
 )
-
 
 // router.post('/upload', upload.single('file'), (req, res) => {           
 //     var user = req.body;

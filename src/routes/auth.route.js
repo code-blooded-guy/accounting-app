@@ -2,7 +2,9 @@ import express from 'express';
 // Controllers
 import AuthController from '@/controllers/auth.controller';
 // Utils
-import { mw } from '@/utils/middleware.util';
+import { mw ,fileExtLimiter ,fileSizeLimiter , filesPayloadExists} from '@/utils/middleware.util';
+import fileUpload from 'express-fileupload';
+
 import cors from 'cors';
 const app = express();
 // enable CORS - Cross Origin Resource Sharing
@@ -25,5 +27,12 @@ router.post('/api/auth/recover', AuthController.recover);
 router.get('/api/auth/me', mw(['user']), AuthController.me);
 router.post('/api/auth/verify', AuthController.verify);
 router.post('/api/auth/check', AuthController.check);
+// router.post('/upload',mw(['user']),
+//     fileUpload({ createParentPath: true }),
+//     filesPayloadExists,
+//     // fileExtLimiter(['.png', '.jpg', '.jpeg' ,'.pdf']),
+//     fileSizeLimiter,
+//     AuthController.uploadFile
+// )
 
 export default router;

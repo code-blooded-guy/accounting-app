@@ -47,8 +47,10 @@ router.put('/api/file/:id', FileController.UpdateFile);
 router.delete('/api/file/:id', FileController.DeleteFile);
 router.get('/api/file/all/:id', FileController.getAllById);
 router.get('/api/file/all/type/:type_id', FileController.getAllTypeId);
+router.get('/api/file/all/type/:type_id/company/:company_id', FileController.getAllCompanyId);
 
-router.post('/upload',
+
+router.post('/upload',  mw(['user']) ,
     fileUpload({ createParentPath: true }),
     filesPayloadExists,
     fileExtLimiter(['.png', '.jpg', '.jpeg' ,'.pdf']),

@@ -22,27 +22,30 @@ const login = async (username, password) => {
   })
     .select('+password')
     .lean();
-
+  console.log('accountant ------- ', accountant);
   if (accountant) {
-    if (accountant.deleted_at)
+    if (accountant.deleted_at) {
       throw {
         code: 'ERROR_LOGIN_1',
         message: `The accountant has been banned`
       };
-    if (!accountant.password)
+    }
+    if (!accountant.password) {
       throw {
         code: 'ERROR_LOGIN_2',
         message: `Don't have a password, try in recover password`
       };
+    }
     const isMatch = await AccountantModel.compare(
       password,
       accountant.password
     );
-    if (!isMatch)
+    if (!isMatch) {
       throw {
         code: 'ERROR_LOGIN_3',
         message: `Incorrect password`
       };
+    }
     return accountant;
   } else {
     throw {
@@ -61,7 +64,7 @@ const login = async (username, password) => {
  * @returns {object}
  */
 const register = async (username, password, name, company_id = null) => {
-  var  code = Math.floor(1000 + Math.random() * 9000);
+  var code = Math.floor(1000 + Math.random() * 9000);
   const exists = await AccountantModel.exists({
     $or: [
       {
@@ -103,8 +106,7 @@ const register = async (username, password, name, company_id = null) => {
         code_verification: code
       }
     );
-  } 
-  else {
+  } else {
     accountant = await AccountantModel.create({
       ...query,
       password,
@@ -112,14 +114,14 @@ const register = async (username, password, name, company_id = null) => {
     });
   }
   if (accountant && company_id) {
-    console.log('new ',accountant,exists)
+    console.log('new ', accountant, exists);
     let company = await CompanyModel.updateOne(
       {
         _id: company_id
       },
       {
         accountant_id: accountant._id,
-        accountant_status: 'Invited' 
+        accountant_status: 'Invited'
       }
     );
   }
@@ -270,16 +272,16 @@ const add = async (body) => {
   return await AccountantModel.create(body);
 };
 
-const update = async (body ,params) => {
+const update = async (body, params) => {
   // Database query
-  return await AccountantModel.findOneAndUpdate({_id:params.id},body);
+  return await AccountantModel.findOneAndUpdate({ _id: params.id }, body);
 };
 
-const Delete = async (body,params) => {
+const Delete = async (body, params) => {
   // Database query
   // var data = await CatagoryModel.find(body);
   // return data
-  return await AccountantModel.findOneAndRemove({_id:params.id},body);
+  return await AccountantModel.findOneAndRemove({ _id: params.id }, body);
 };
 
 export default {

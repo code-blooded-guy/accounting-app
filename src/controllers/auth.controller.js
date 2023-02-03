@@ -4,7 +4,8 @@ import AuthBusiness from '@/business/auth.business';
 // Utils
 import { session } from '@/utils/auth.util';
 import { success, error, unauthorized } from '@/utils/helper.util';
-
+import admin from 'firebase-admin';
+import { async } from '@babel/runtime/helpers/regeneratorRuntime';
 /**
  * login
  *
@@ -50,10 +51,11 @@ const login = async (req, res) => {
  * @param {*} res
  * @returns
  */
-const register = async (req, res) => {
+const register = (req, res) => {
   try {
-    const { username, password, name, email, phone } = req.body;
-    console.log(email, phone, username, password, name, 'sdjhsjsads');
+    const { username, name } = req.body;
+    console.log(username, name );
+
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',
@@ -61,25 +63,41 @@ const register = async (req, res) => {
       };
     }
 
-    if (validator.isEmpty(password)) {
-      throw {
-        code: 'ERROR_AUTH_2',
-        message: 'The password cannot be empty'
-      };
-    }
+    // if (validator.isEmpty(password)) {
+    //   throw {
+    //     code: 'ERROR_AUTH_2',
+    //     message: 'The password cannot be empty'
+    //   };
+    // }
 
-   
-
-    const data = await AuthBusiness.register(
-      username,
-      password,
-      name,
-      null,
-      email,
-      phone
-    );
-    let created = '_id' in data || 'n' in data;
-    return success(res, 201, { created });
+      admin
+      .auth()
+      .getUserByPhoneNumber(username)
+      .then((response) => {
+        console.log(response.uid);
+        const password = response.uid;
+        if (password) {
+          const data = AuthBusiness.register(
+            username,
+            password,
+            name,
+            // response.uid
+            // email,
+            // phone
+          )
+            .then((a) => {
+              console.log('a ------ ', a);
+              let created = '_id' in a || 'n' in a;
+              return success(res, 201, { created });
+            })
+            .catch((err) => {
+              error(res, err);
+            });
+        }
+      })
+      .catch((err) => {
+        error(res, err.errorInfo);
+      });
   } catch (err) {
     error(res, err);
   }

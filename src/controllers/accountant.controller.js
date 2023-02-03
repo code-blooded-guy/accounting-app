@@ -16,7 +16,7 @@ import accountantBusiness from '@/business/accountant.business';
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-
+console.log(req.body);
     if (validator.isEmpty(username)) {
       throw {
         code: 'ERROR_AUTH_1',
@@ -30,8 +30,9 @@ const login = async (req, res) => {
         message: 'The password cannot be empty'
       };
     }
-
+console.log('user');
     const user = await AccountantBusiness.login(username, password);
+    console.log(user,'user');
     if (user) {
       const { _id, permissions } = user;
       const token = await session(_id, { permissions });

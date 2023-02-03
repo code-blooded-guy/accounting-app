@@ -12,6 +12,14 @@ const schema = new Schema(
       type: String,
       // contentType: String
     },
+    fileName: {
+      type: String,
+      // contentType: String
+    },
+    fileType: {
+      type: String,
+      // contentType: String
+    },
     type_id: {
       type: Schema.Types.ObjectId,
       ref: 'Type',
@@ -26,6 +34,11 @@ const schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Accountant',
       required: true
+    },
+    company_id: {
+      type: Schema.Types.ObjectId,
+      ref: 'Company',
+      // required: true
     },
     uploaded_date: {
       type: Date

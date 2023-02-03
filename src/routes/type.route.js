@@ -51,7 +51,6 @@ router.post(
 
  
 
-
 /**
  * GET /api/type/all/logged
  * @summary  Get all type (logged)

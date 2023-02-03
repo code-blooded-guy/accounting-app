@@ -33,6 +33,7 @@ const login = async (username, password) => {
         code: 'ERROR_LOGIN_2',
         message: `Don't have a password, try in recover password`
       };
+
     const isMatch = await UserModel.compare(password, user.password);
     if (!isMatch)
       throw {
@@ -56,7 +57,7 @@ const login = async (username, password) => {
  * @param {*} password
  * @returns {object}
  */
-const register = async (username, password, name, terms ,email ,phone) => {
+const register = async (username, password, name, terms ) => {
   var code = Math.floor(1000 + Math.random() * 9000);
   const exists = await UserModel.exists({
     $or: [
@@ -81,11 +82,11 @@ const register = async (username, password, name, terms ,email ,phone) => {
     };
 
     if (username.includes('@')) {
-      query.email = email;
-      query.phone = phone;
+      query.email = username;
+      query.phone = username;
     } else {
-      query.phone = phone;
-      query.email = email;
+      query.phone = username;
+      query.email = username;
     }
     code = '0000';
     const user = await UserModel.create({

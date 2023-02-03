@@ -4,11 +4,22 @@ import { connect as mongoose } from '@/libs/mongoose.lib';
 import { connect as redis } from '@/libs/redis.lib';
 import { connect as ws } from '@/libs/socketio.lib';
 import autoload from '@/utils/autoload.util';
+// import serviceAccountKey from '../serviceAccountKey.json'
+import serviceAccountKey from '../serviceAccountKey.json'
+import admin from "firebase-admin";
+
+
+admin.initializeApp(
+  {
+    credential: admin.credential.cert(serviceAccountKey)
+  }
+);
+
 
 /**
  * init
  */
-const init = async () => {
+const init = async (server) => {
   // Connect to DB (You can enable seeds)
   await db();
   // Connect to Redis
@@ -18,7 +29,7 @@ const init = async () => {
   // Create Express app and add routes
   await routes();
   // Connect Sockets (idle to connections...)
-  sockets();
+  sockets(server);
 };
 
 /**
@@ -51,8 +62,8 @@ const routes = async () => {
 /**
  * sockets
  */
-const sockets = async () => {
-  await ws();
+const sockets = async (server) => {
+  await ws(server);
 };
 
 export { init };

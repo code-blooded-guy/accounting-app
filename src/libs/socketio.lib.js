@@ -12,7 +12,7 @@ import {
 import autoload from '@/utils/autoload.util';
 import { mws } from '@/utils/middleware.util';
 
-const io = require('socket.io')(SERVER_WEBSOCKET_PORT);
+
 // const PORT = require('net').isIP(REDIS_HOSTNAME) ? `:${REDIS_PORT}` : '';
 
 // io.adapter(
@@ -24,13 +24,42 @@ const io = require('socket.io')(SERVER_WEBSOCKET_PORT);
 // );
 // io.eio.pingTimeout = 120000; // 2 minutes
 // io.eio.pingInterval = 5000; // 5 seconds
-
-const connect = () =>
-  new Promise((resolve) => {
+global.onlineUsers = new Map();
+const connect = (server) =>
+new Promise((resolve) => {
+  const io = require('socket.io')(server,{ 
+    cors: {
+      origin: "http://localhost:3000"
+    }
+  });
     console.log(`✅ Socket: initiated!`);
     // connection
     io.on('connection', (socket) => {
-      console.log(`❕Socket: client connected! (${socket.id})`);
+      // console.log(`❕Socket: client connected! (${socket.id})`);
+      
+      global.chatSocket = socket;
+      socket.on('add-user', (user_id) => {
+        global.onlineUsers.set(user_id, socket.id);
+        // console.log(user_id,'user_id',socket.id,', socket.id')
+        
+      });
+
+
+      socket.on('send-msg', (data) => {
+        global.onlineUsers = new Map();
+        console.log(data,'dataaaaaaaa')
+        console.log(global.onlineUsers,'onlineUsers');
+
+        const sendUserSocket = global.onlineUsers.get(data.to);
+        // console.log(global.onlineUsers,'sendUserSocket');
+        // console.log(`global.onlineUsers=${JSON.stringify(Array.from(global.onlineUsers.entries()))}`,'second console');
+
+        // if (sendUserSocket) {
+          console.log(sendUserSocket,'sendUserSocket')
+          socket.to(sendUserSocket).emit('msg-recieve', data);
+          console.log(socket.to(sendUserSocket).emit('msg-recieve', data));
+        // }
+      });
 
       // disconnect
       socket.on('disconnect', (reason) => {
@@ -55,6 +84,44 @@ const connect = () =>
     });
   });
 
-const connections = () => io.engine.clientsCount;
+// global.onlineUsers = new Map();
+// const connect = (server) =>
+// new Promise((resolve) => {
+//   const io = require('socket.io')(server,{ 
+//     cors: {
+//       origin: "http://localhost:3000"
+//     }
+//   });
+//     console.log(`✅ Socket: initiated!`);
+//     // connection
+//     io.on('connection', (socket) => {
+//       // console.log(`❕Socket: client connected! (${socket.id})`);
+      
+//       global.chatSocket = socket;
+//       socket.on('add-user', (user_id) => {
+//         global.onlineUsers.set(user_id, socket.id);
+//         console.log(user_id,'user_id',socket.id,', socket.id')
+//       });
 
-export { connect, connections };
+
+//       socket.on('send-msg', (data) => {
+//         console.log(data,'dataaaaaaaa')
+//         console.log(global.onlineUsers,'onlineUsers');
+
+//         const sendUserSocket = global.onlineUsers.get(data.to);
+//         console.log(global.onlineUsers,'sendUserSocket');
+       
+//         if (sendUserSocket) {
+//           console.log(sendUserSocket,'sendUserSocket')
+
+//           console.log(data.msg,'data.msg')
+//           socket.to(sendUserSocket).emit('msg-recieve', data.msg);
+//         }
+//       });
+//     });
+// });
+
+
+// const connections = () => io.engine.clientsCount;
+
+export { connect };

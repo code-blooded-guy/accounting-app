@@ -1,4 +1,5 @@
 // Business
+import companyBusiness from '@/business/company.business';
 import fileBusiness from '@/business/file.business';
 import FileBusiness from '@/business/file.business';
 import { success, error } from '@/utils/helper.util';
@@ -84,10 +85,29 @@ const getAllTypeId = async (req, res) => {
   }
 };
 
+const getAllCompanyId = async (req, res) => {
+  try {
+    // Get current user id from session
+    const {company_id,type_id} = req.params
+    
+    console.log('_id',company_id);
+    const data = await fileBusiness.getAllCompanyId(type_id,company_id);
+    // console.log('data', data);
+    // Return success
+    success(res, data);
+  } catch (err) {
+    // Return error (if any)
+    error(res, err);
+  }
+};
+
 const Addfile = async (req, res ) => {
   try {
     // console.log(req.body , 'file________')
-    const data = await FileBusiness.add(req.body);
+    const data1 = await companyBusiness.getById(req.body.company_id);
+    console.log('data1 ------- ',data1)
+    const user_id = req.user.id;
+    const data = await FileBusiness.add({...req.body,accountant_id:data1.accountant_id ,user_id});
     // console.log('data__________',data)
 
     let created = '_id' in data || 'n' in data;
@@ -134,4 +154,4 @@ const DeleteFile = async (req, res) => {
   }
 };
 
-export default { getAll, getAllLogged ,Addfile ,UpdateFile ,DeleteFile ,getAllById ,getAllTypeId};
+export default { getAll, getAllLogged ,Addfile ,UpdateFile ,DeleteFile ,getAllById ,getAllTypeId , getAllCompanyId};

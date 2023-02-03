@@ -1,5 +1,6 @@
 // Models
 import FileModel from '@/models/file.model';
+import { ObjectId } from 'mongodb';
 
 const getAll = async () => {
   // Database query
@@ -30,13 +31,34 @@ const Delete = async (body,params) => {
 
 
 const getAllById = async (_id) => {
-  
-  return await FileModel.findOne({ _id});
+ let a = await FileModel.aggregate([
+  {
+    $match : {_id:ObjectId(_id)},
+    
+  },
+    { $lookup:
+        {
+           from: "status",
+           localField: "status_id",
+           foreignField: "_id",
+           as: "status"
+        }
+    },
+]);
+
+  // console.log('a______',a[0].status)
+  return a;
+  // return await FileModel.findOne({ _id});
 };
 
 const getAllTypeId = async (type_id) => {
   
   return await FileModel.find({type_id});
+};
+
+const getAllCompanyId = async (type_id,company_id) => {
+  
+  return await FileModel.find({type_id,company_id});
 };
 
 export default {
@@ -46,5 +68,6 @@ export default {
   update,
   Delete,
   getAllById,
-  getAllTypeId
+  getAllTypeId,
+  getAllCompanyId
 };

@@ -12,8 +12,7 @@ import { app } from '@/libs/express.lib';
 
 (async () => {
   try {
-    await init();
-    app.listen(SERVER_PORT, () => {
+   const server = app.listen(SERVER_PORT, () => {
       console.log(
         `-------\n${chalk.black.bgGreenBright(
           `🚀 Server is ready!`
@@ -26,6 +25,8 @@ import { app } from '@/libs/express.lib';
         )}\n-------`
       );
     });
+    await init(server);
+    
   } catch (error) {
     console.log(`${chalk.red.bold(error)}`);
   }
